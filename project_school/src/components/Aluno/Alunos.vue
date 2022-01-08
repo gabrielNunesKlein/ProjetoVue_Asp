@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div>
-      <Titulo texto="Aluno" />
+    <Titulo :texto="profId != undefined ? 'Aluno do professor: ' + professor.nome : 'Todos os alunos'" />
+    <div v-if="profId != undefined">
       <input type="text" placeholder="Nome do Aluno" v-model="nome" v-on:keyup.enter="addAluno()">
       <button class="btn btn-input" @click="addAluno()">Adicionar</button>
     </div>
@@ -15,9 +15,13 @@
       </thead>
       <tbody v-if="alunos.length">
         <tr v-for="(aluno, index) in alunos" :key="index">
-          <td>{{ aluno.id }}</td>
-          <td>{{ aluno.nome }} {{ aluno.sobrenome }}</td>
+          <td class="colPequeno">{{ aluno.id }}</td>
           <td>
+            <router-link :to="`/alunoDetalhe/${aluno.id}`" style="text-decoration: none">
+              {{ aluno.nome }} {{ aluno.sobrenome }}
+            </router-link>
+          </td>
+          <td class="colPequeno">
             <button class="btn btnDanger" @click="remover(aluno)">Remover</button>
           </td>
         </tr>
@@ -42,7 +46,11 @@ export default {
     async addAluno(){
       let _aluno = {
         nome: this.nome,
-        sobrenome: ""
+        sobrenome: "",
+        professor: {
+          id: this.profId,
+          nome: this.professor.nome
+        }
       }
 
       let dataJson = JSON.stringify(_aluno);
@@ -67,19 +75,36 @@ export default {
         let indice = this.alunos.indexOf(aluno);
         this.alunos.splice(indice, 1)
       });
-    }
+    },
+
+    async carregaProfessores(){
+      await fetch('http://localhost:3000/professores/' + this.profId)
+          .then(resp => resp.json())
+          .then(professor => { 
+            this.professor = professor
+            });
+      console.log(this.professor);
+      }
   },
 
   data() {
     return {
       titulo: 'Aluno',
+      profId: this.$route.params.prof_id,
+      professor: {},
       nome: '',
       alunos: []
     }
   },
 
   async created() {
-    await fetch('http://localhost:3000/alunos').then(resp => resp.json()).then(alunos => this.alunos = alunos);
+    if(this.profId){
+      this.carregaProfessores();
+      await fetch('http://localhost:3000/alunos?professor.id=' + this.profId)
+          .then(resp => resp.json()).then(alunos => this.alunos = alunos);
+    } else {
+      await fetch('http://localhost:3000/alunos').then(resp => resp.json()).then(alunos => this.alunos = alunos);
+    }
   },
 }
 </script>
@@ -87,6 +112,7 @@ export default {
 <style scoped>
 
 input {
+  width: calc(100% - 195px);
   border: 0;
   padding: 20px;
   font-size: 1.3em;
@@ -95,6 +121,7 @@ input {
 }
 
 .btn-input {
+  width: 150px;
   border: 0px;
   padding: 20px;
   font-size: 1.3em;

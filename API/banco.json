@@ -1,29 +1,82 @@
 {
+  "professores": [
+    {
+      "id": 1,
+      "nome": "Gabriel"
+    },
+    {
+      "id": 2,
+      "nome": "Julia"
+    },
+    {
+      "id": 3,
+      "nome": "Fernando"
+    }
+  ],
   "alunos": [
     {
       "id": 1,
       "nome": "Julianna",
-      "sobrenome": "Guil"
+      "sobrenome": "Guil",
+      "professor": {
+        "id": 2,
+        "nome": "Julia"
+      }
     },
     {
       "id": 2,
       "nome": "Vinnicius",
-      "sobrenome": "Andrade"
+      "sobrenome": "Andrade",
+      "professor": {
+        "id": 3,
+        "nome": "Fernando"
+      }
     },
     {
-      "nome": "Maria",
-      "sobrenome": "",
-      "id": 3
+      "id": 3,
+      "nome": "Marta",
+      "sobrenome": "Silva",
+      "dataNasc": "13/05/1998",
+      "professor": {
+        "id": "1",
+        "nome": "Gabriel"
+      }
     },
     {
-      "nome": "Carol",
+      "nome": "Jonathan",
       "sobrenome": "",
+      "professor": {
+        "id": "2",
+        "nome": "Julia"
+      },
       "id": 4
     },
     {
-      "nome": "Gabriel",
+      "nome": "Alan",
       "sobrenome": "",
+      "professor": {
+        "id": "3",
+        "nome": "Fernando"
+      },
       "id": 5
+    },
+    {
+      "id": 6,
+      "nome": "Carol",
+      "sobrenome": "Silva",
+      "professor": {
+        "id": "1",
+        "nome": "Gabriel"
+      }
+    },
+    {
+      "nome": "José",
+      "sobrenome": "",
+      "professor": {
+        "id": "1",
+        "nome": "Gabriel"
+      },
+      "id": 7
     }
   ]
 }
